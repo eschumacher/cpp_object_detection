@@ -10,6 +10,8 @@ include(CTest)
 
 include(FetchContent)
 
+find_package(OpenCV REQUIRED)
+
 ###########################
 # tensorflow lite API
 ###########################
@@ -29,11 +31,13 @@ add_library(${PROJECT_NAME}-lib STATIC src/object_detection.cpp)
 
 target_link_libraries(${PROJECT_NAME}-lib PRIVATE
     tensorflow-lite
+    ${OpenCV_LIBS}
 )
 
 target_include_directories(${PROJECT_NAME}-lib
     PRIVATE
     include
+    ${OpenCV_INCLUDE_DIRS}
 )
 
 ###################################
@@ -44,6 +48,11 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     tensorflow-lite
     ${PROJECT_NAME}-lib
+    ${OpenCV_LIBS}
+)
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${OpenCV_INCLUDE_DIRS}
 )
 
 ###################################
